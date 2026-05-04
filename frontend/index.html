@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Management System</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main id="loginPage" class="login-page">
+    <section class="login-panel">
+      <p class="eyebrow">Hospital Management System</p>
+      <h1>Staff Login</h1>
+      <form id="loginForm">
+        <label>
+          Email
+          <input type="email" name="email" value="admin@hms.local" required>
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" value="admin123" required>
+        </label>
+        <button type="submit">Login</button>
+      </form>
+    </section>
+  </main>
+
+  <div id="appShell" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <span>HMS</span>
+        <strong>Hospital System</strong>
+      </div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-link active" data-page="dashboardPage">Dashboard</button>
+        <button class="nav-link" data-page="patientsPage">Patients</button>
+        <button class="nav-link" data-page="doctorsPage">Doctors</button>
+        <button class="nav-link" data-page="appointmentsPage">Appointments</button>
+        <button class="nav-link" data-page="admissionsPage">Admissions</button>
+        <button class="nav-link" data-page="billingPage">Billing</button>
+        <button class="nav-link" data-page="labTestsPage">Lab Tests</button>
+      </nav>
+      <button id="logoutButton" class="logout-button">Logout</button>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Operations Console</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <span class="user-pill">Admin</span>
+      </header>
+
+      <section id="dashboardPage" class="page active">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span id="patientCount">--</span>
+            <p>Patients</p>
+          </article>
+          <article class="stat-card">
+            <span id="doctorCount">--</span>
+            <p>Doctors</p>
+          </article>
+          <article class="stat-card">
+            <span id="appointmentCount">--</span>
+            <p>Appointments</p>
+          </article>
+        </div>
+
+        <section class="panel wide-panel">
+          <div class="section-header">
+            <div>
+              <h2>Upcoming Appointments</h2>
+              <p>Today and next scheduled visits.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Doctor</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardAppointmentsTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="patientsPage" class="page">
+        <div class="content-grid">
+          <section class="panel">
+            <h2>Add Patient</h2>
+            <form id="patientForm">
+              <label>First Name <input type="text" name="firstName" required></label>
+              <label>Last Name <input type="text" name="lastName" required></label>
+              <label>Date of Birth <input type="date" name="dateOfBirth" required></label>
+              <label>Gender
+                <select name="gender">
+                  <option value="">Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label>Phone <input type="tel" name="phone"></label>
+              <label>Email <input type="email" name="email"></label>
+              <label>Address <input type="text" name="address"></label>
+              <label>Blood Group <input type="text" name="bloodGroup" maxlength="5"></label>
+              <button type="submit">Add Patient</button>
+              <p id="patientMessage" class="message" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel table-panel">
+            <div class="section-header">
+              <h2>Patient Records</h2>
+              <button type="button" id="refreshPatientsButton" class="secondary-button">Refresh</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                    <th>Blood</th>
+                  </tr>
+                </thead>
+                <tbody id="patientsTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="doctorsPage" class="page">
+        <div class="content-grid">
+          <section class="panel">
+            <h2>Add Doctor</h2>
+            <form id="doctorForm">
+              <label>First Name <input type="text" name="firstName" required></label>
+              <label>Last Name <input type="text" name="lastName" required></label>
+              <label>Department ID <input type="number" name="departmentId" min="1" required></label>
+              <label>Specialization <input type="text" name="specialization" required></label>
+              <label>Phone <input type="tel" name="phone"></label>
+              <label>Email <input type="email" name="email"></label>
+              <button type="submit">Add Doctor</button>
+              <p id="doctorMessage" class="message" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel table-panel">
+            <h2>Doctor Directory</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Specialization</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody id="doctorsTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="appointmentsPage" class="page">
+        <div class="content-grid">
+          <section class="panel">
+            <h2>Book Appointment</h2>
+            <form id="appointmentForm">
+              <label>Patient ID <input type="number" name="patientId" min="1" required></label>
+              <label>Doctor ID <input type="number" name="doctorId" min="1" required></label>
+              <label>Date <input type="date" name="appointmentDate" required></label>
+              <label>Reason <input type="text" name="reason"></label>
+              <label>Notes <input type="text" name="notes"></label>
+              <button type="submit">Book Appointment</button>
+              <p id="appointmentMessage" class="message" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel table-panel">
+            <h2>Appointments</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Patient ID</th>
+                    <th>Doctor ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="appointmentsTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="billingPage" class="page">
+        <div class="content-grid">
+          <section class="panel">
+            <h2>Generate Bill</h2>
+            <form id="billForm">
+              <label>Patient ID <input type="number" name="patientId" min="1" required></label>
+              <button type="submit">Generate Bill</button>
+              <p id="billMessage" class="message" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel table-panel">
+            <h2>Billing Records</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Bill ID</th>
+                    <th>Patient ID</th>
+                    <th>Consultation</th>
+                    <th>Room</th>
+                    <th>Lab</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="billsTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="admissionsPage" class="page">
+        <div class="content-grid">
+          <section class="panel">
+            <h2>Admit Patient</h2>
+            <form id="admissionForm">
+              <label>Patient ID <input type="number" name="patientId" min="1" required></label>
+              <label>Doctor ID <input type="number" name="doctorId" min="1" required></label>
+              <label>Room ID <input type="number" name="roomId" min="1" required></label>
+              <label>Admission Date <input type="date" name="admissionDate" required></label>
+              <label>Diagnosis <input type="text" name="diagnosis"></label>
+              <button type="submit">Admit Patient</button>
+              <p id="admissionMessage" class="message" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel table-panel">
+            <h2>Admissions</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Patient ID</th>
+                    <th>Doctor ID</th>
+                    <th>Room ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admissionsTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="labTestsPage" class="page">
+        <div class="content-grid">
+          <section class="panel">
+            <h2>Add Lab Test</h2>
+            <form id="labTestForm">
+              <label>Patient ID <input type="number" name="patientId" min="1" required></label>
+              <label>Doctor ID <input type="number" name="doctorId" min="1"></label>
+              <label>Appointment ID <input type="number" name="appointmentId" min="1"></label>
+              <label>Test Name <input type="text" name="testName" required></label>
+              <label>Test Date <input type="date" name="testDate" required></label>
+              <label>Cost <input type="number" name="cost" min="0" step="0.01" required></label>
+              <label>Status
+                <select name="status">
+                  <option>PENDING</option>
+                  <option>COMPLETED</option>
+                </select>
+              </label>
+              <button type="submit">Add Lab Test</button>
+              <p id="labTestMessage" class="message" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel table-panel">
+            <h2>Lab Tests</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Patient ID</th>
+                    <th>Test</th>
+                    <th>Date</th>
+                    <th>Cost</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="labTestsTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
